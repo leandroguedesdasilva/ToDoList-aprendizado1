@@ -1,9 +1,7 @@
 package br.com.todolist.todolist;
 
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +28,12 @@ public class TarefaService {
             });
     }
 
+    public Optional<TarefaResponseDTO> buscaPorId(Long id){
+
+        Optional<Tarefa> tarefaOptional = tarefaRepository.findById(id);
+        Optional<TarefaResponseDTO> responseDTO = tarefaOptional.map(TarefaResponseDTO::new);
+        return responseDTO;
+    }
 
 
     @Transactional
