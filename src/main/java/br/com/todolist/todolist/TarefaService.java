@@ -19,16 +19,18 @@ public class TarefaService {
     }
 
     @Transactional
-    public Optional<Tarefa> atualizarTarefa(Long id, @RequestBody TarefaRequestDTO tarefaComNovosDados){
+    public Optional<Tarefa> atualizarTarefa(Long id, TarefaRequestDTO tarefaAlterada){
 
         return tarefaRepository.findById(id)
             .map(tarefaExistente ->{
-                tarefaExistente.setDescricao(tarefaComNovosDados.getDescricao());
-                tarefaExistente.setTitulo(tarefaComNovosDados.getTitulo());
-                tarefaExistente.setPrioridade(tarefaComNovosDados.getPrioridade());
+                tarefaExistente.setDescricao(tarefaAlterada.getDescricao());
+                tarefaExistente.setTitulo(tarefaAlterada.getTitulo());
+                tarefaExistente.setPrioridade(tarefaAlterada.getPrioridade());
                 return tarefaExistente;
             });
     }
+
+
 
     @Transactional
     public Tarefa criarTarefa(TarefaRequestDTO novaTarefaDTO){
