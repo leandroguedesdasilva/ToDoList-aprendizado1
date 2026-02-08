@@ -22,7 +22,7 @@ public class Tarefa {
         this.id = id;
         this.titulo = titulo;
         this.descricao = descricao;
-        this.concluido = concuido;
+        this.concluido = false;
         this.prioridade = prioridade;
     }
 
@@ -30,10 +30,10 @@ public class Tarefa {
 
     }
 
-    public Tarefa(String titulo, String descricao, Boolean concluido, int prioridade) {
+    public Tarefa(String titulo, String descricao, int prioridade) {
         this.titulo = titulo;
         this.descricao = descricao;
-        this.concluido = concluido;
+        this.concluido = false;
         this.prioridade = prioridade;
     }
 

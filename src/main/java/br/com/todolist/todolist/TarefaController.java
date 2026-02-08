@@ -18,8 +18,14 @@ public class TarefaController {
     }
 
     @GetMapping("/tarefas")
-    public List<TarefaResponseDTO> listarTodos(){
-        return tarefaService.listarTodos();
+    public ResponseEntity<List<TarefaResponseDTO>> listarTodos(){
+
+        List<TarefaResponseDTO> tarefas = tarefaService.listarTodos();
+        if (tarefas.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(tarefas);
+
     }
 
     @PostMapping("/tarefas")
@@ -32,15 +38,15 @@ public class TarefaController {
     }
 
     @PutMapping("/tarefas/{id}")
-    public ResponseEntity<Tarefa> atualizaTarefa (@PathVariable Long id, @Valid @RequestBody TarefaRequestDTO tarefaAlteradaDTO){
+    public ResponseEntity<TarefaResponseDTO> atualizarTarefa(@PathVariable Long id, @Valid @RequestBody TarefaRequestDTO tarefaAlteradaDTO){
 
-        Optional<Tarefa> tarefaSalva = tarefaService.atualizarTarefa(id,tarefaAlteradaDTO);
-        if (tarefaSalva.isEmpty()){
-            ResponseEntity.notFound().build();
-            return ResponseEntity.ok(tarefaSalva.get());
-        } else {
-            return ResponseEntity.ok(tarefaSalva.get());
+        Optional<Tarefa> tarefaOptional = tarefaService.atualizarTarefa(id,tarefaAlteradaDTO);
+        if(tarefaOptional.isEmpty()){
+            return ResponseEntity.notFound().build();
         }
+        Tarefa tarefaSalva = tarefaOptional.get();
+        TarefaResponseDTO responseDTO = new TarefaResponseDTO(tarefaSalva);
+        return ResponseEntity.ok(responseDTO);
 
     }
 }

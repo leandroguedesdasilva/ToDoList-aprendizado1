@@ -19,34 +19,36 @@ public class TarefaService {
     }
 
     @Transactional
-    public Optional<Tarefa> atualizarTarefa(Long id, @RequestBody TarefaRequestDTO tarefaComNovosDados){
+    public Optional<Tarefa> atualizarTarefa(Long id, TarefaRequestDTO tarefaAlterada){
 
         return tarefaRepository.findById(id)
-                .map(tarefaExistente ->{
-                    tarefaExistente.setDescricao(tarefaComNovosDados.getDescricao());
-                    tarefaExistente.setTitulo(tarefaComNovosDados.getTitulo());
-                    tarefaExistente.setPrioridade(tarefaComNovosDados.getPrioridade());
-                    return tarefaExistente;
-                });
+            .map(tarefaExistente ->{
+                tarefaExistente.setDescricao(tarefaAlterada.getDescricao());
+                tarefaExistente.setTitulo(tarefaAlterada.getTitulo());
+                tarefaExistente.setPrioridade(tarefaAlterada.getPrioridade());
+                return tarefaExistente;
+            });
     }
+
+
 
     @Transactional
     public Tarefa criarTarefa(TarefaRequestDTO novaTarefaDTO){
 
         Tarefa tarefaParaSalvar = new Tarefa(
-                novaTarefaDTO.getTitulo(),
-                novaTarefaDTO.getDescricao(),
-                false,
-                novaTarefaDTO.getPrioridade()
+            novaTarefaDTO.getTitulo(),
+            novaTarefaDTO.getDescricao(),
+            novaTarefaDTO.getPrioridade()
         );
         Tarefa tarefaSalva = tarefaRepository.save(tarefaParaSalvar);
 
         return tarefaSalva;
     }
+
     public List<TarefaResponseDTO> listarTodos(){
         return tarefaRepository.findAll()
-                .stream()
-                .map(TarefaResponseDTO::new)
-                .collect(Collectors.toList());
+            .stream()
+            .map(TarefaResponseDTO::new)
+            .collect(Collectors.toList());
     }
 }
