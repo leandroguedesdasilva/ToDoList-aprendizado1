@@ -19,24 +19,37 @@ public class TarefaController {
 
     @GetMapping("/tarefas")
     public ResponseEntity<List<TarefaResponseDTO>> listarTodos(){
-
         List<TarefaResponseDTO> tarefas = tarefaService.listarTodos();
         if (tarefas.isEmpty()){
             return ResponseEntity.noContent().build();
         }
-
         return ResponseEntity.ok(tarefas);
-
     }
 
-    @GetMapping("/tarefas/{id}")
-    public ResponseEntity<TarefaResponseDTO> buscarPorId(@PathVariable Long id){
+    @GetMapping("/{id}" )
+    public ResponseEntity<TarefaResponseDTO> buscarPorId(@PathVariable Long id) {
+        // 1. Chame o serviço, que retorna um Optional de DTO.
+        Optional<TarefaResponseDTO> tarefaDTO = tarefaService.buscarPorId(id);
 
-        Optional<TarefaResponseDTO> responseDTO = tarefaService.buscaPorId(id);
-        if(responseDTO.isPresent()){
-            TarefaResponseDTO tarefaDTO = responseDTO.get();
-            return ResponseEntity.ok(tarefaDTO);
-        }else{
+        // 2. Verifique se o Optional retornado pelo serviço contém um valor.
+        if (tarefaDTO.isPresent()) {
+            // 3. Se sim, pegue o DTO de dentro do Optional.
+            TarefaResponseDTO tarefaEncontrada = tarefaDTO.get();
+
+            // 4. Crie uma resposta HTTP 200 OK com o DTO no corpo.
+            return ResponseEntity.ok(tarefaEncontrada);
+        } else {
+            // 5. Se o Optional estava vazio, crie uma resposta HTTP 404 Not Found.
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PatchMapping("/tarefas/{id}/concluir")
+    public ResponseEntity<Tarefa> concluirTarefaPorId(@PathVariable Long id) {
+        Optional<Tarefa> tarefaDTO = tarefaService.concluirTarefa(id);
+        if (tarefaDTO.isPresent()) {
+            return ResponseEntity.noContent().build();
+        } else {
             return ResponseEntity.notFound().build();
         }
     }
