@@ -18,8 +18,14 @@ public class TarefaController {
     }
 
     @GetMapping("/tarefas")
-    public List<TarefaResponseDTO> listarTodos(){
-        return tarefaService.listarTodos();
+    public ResponseEntity<List<TarefaResponseDTO>> listarTodos(){
+
+        List<TarefaResponseDTO> tarefas = tarefaService.listarTodos();
+        if (tarefas.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(tarefas);
+
     }
 
     @PostMapping("/tarefas")
