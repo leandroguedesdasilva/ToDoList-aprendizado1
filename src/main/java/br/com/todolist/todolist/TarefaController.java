@@ -24,8 +24,21 @@ public class TarefaController {
         if (tarefas.isEmpty()){
             return ResponseEntity.noContent().build();
         }
+
         return ResponseEntity.ok(tarefas);
 
+    }
+
+    @GetMapping("/tarefas/{id}")
+    public ResponseEntity<TarefaResponseDTO> buscarPorId(@PathVariable Long id){
+
+        Optional<TarefaResponseDTO> responseDTO = tarefaService.buscaPorId(id);
+        if(responseDTO.isPresent()){
+            TarefaResponseDTO tarefaDTO = responseDTO.get();
+            return ResponseEntity.ok(tarefaDTO);
+        }else{
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/tarefas")
