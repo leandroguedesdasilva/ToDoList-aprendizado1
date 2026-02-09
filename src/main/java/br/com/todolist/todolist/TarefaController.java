@@ -17,6 +17,13 @@ public class TarefaController {
         this.tarefaService = tarefaService;
     }
 
+    @GetMapping("/tarefas/{status}")
+    public ResponseEntity<List<TarefaResponseDTO>> buscaPorStatus(@PathVariable Boolean status){
+        List<TarefaResponseDTO> tarefasEncontradas = tarefaService.buscarPorConcluidas(status);
+        return ResponseEntity.ok(tarefasEncontradas);
+    }
+
+
     @GetMapping("/tarefas")
     public ResponseEntity<List<TarefaResponseDTO>> listarTodos(){
         List<TarefaResponseDTO> tarefas = tarefaService.listarTodos();

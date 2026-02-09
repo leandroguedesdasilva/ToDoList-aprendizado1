@@ -3,6 +3,7 @@ package br.com.todolist.todolist;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -58,6 +59,16 @@ public class TarefaService {
             return Optional.empty();
         }
     }
+
+    public List<TarefaResponseDTO> buscarPorConcluidas(Boolean status) {
+        List<Tarefa> tarefasEncontradas = tarefaRepository.findByConcluido(status);
+        List<TarefaResponseDTO> tarefasEncontradasDTOs = new ArrayList<>();
+        for (Tarefa tarefa : tarefasEncontradas){
+            TarefaResponseDTO dto = new TarefaResponseDTO(tarefa);
+            tarefasEncontradasDTOs.add(dto);
+        }
+        return tarefasEncontradasDTOs;
+}
 
 
     @Transactional
